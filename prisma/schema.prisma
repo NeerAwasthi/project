@@ -1,0 +1,132 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(cuid())
+  githubId      String?  @unique
+  username      String   @unique
+  name          String?
+  email         String?  @unique
+  avatarUrl     String?
+  bio           String?
+  githubUrl     String?
+  publicRepos   Int      @default(0)
+  followers     Int      @default(0)
+  following     Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  repositories  Repository[]
+  analyses      AIAnalysis[]
+  recommendations LearningRecommendation[]
+  connections   GitHubConnection[]
+}
+
+model GitHubConnection {
+  id              String   @id @default(cuid())
+  userId          String
+  githubId        String?
+  accessToken     String?
+  tokenType       String?
+  refreshToken    String?
+  expiresAt       DateTime?
+  scope           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Repository {
+  id            String   @id @default(cuid())
+  githubId      String   @unique
+  name          String
+  fullName      String
+  description   String?
+  url           String
+  language      String?
+  stars         Int      @default(0)
+  forks         Int      @default(0)
+  watchers      Int      @default(0)
+  openIssues    Int      @default(0)
+  visibility    String   @default("public")
+  defaultBranch String?
+  owner         String
+  createdAt     DateTime?
+  updatedAt     DateTime?
+  pushedAt      DateTime?
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  commits       Commit[]
+  analyses      AIAnalysis[]
+
+  @@index([userId])
+  @@index([language])
+}
+
+model Commit {
+  id          String    @id @default(cuid())
+  sha         String    @unique
+  message     String
+  author      String?
+  authorEmail String?
+  url         String?
+  createdAt   DateTime?
+  repositoryId String
+  repository  Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+
+  @@index([repositoryId])
+}
+
+model AIAnalysis {
+  id                  String   @id @default(cuid())
+  userId              String
+  repositoryId        String?
+  summary             String
+  strengths           String[]
+  weaknesses         String[]
+  technologies        String[]
+  codeQuality         Int
+  architectureScore   Int
+  securityScore       Int
+  maintainabilityScore Int
+  recommendations     String[]
+  createdAt           DateTime @default(now())
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  repository          Repository? @relation(fields: [repositoryId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+}
+
+model LearningRecommendation {
+  id          String   @id @default(cuid())
+  userId      String
+  technology  String
+  reason      String
+  skillLevel  String
+  resources   String[]
+  priority    String
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model NewsArticle {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  url         String
+  source      String
+  publishedAt DateTime?
+  category    String?
+  createdAt   DateTime @default(now())
+
+  @@index([category])
+}
