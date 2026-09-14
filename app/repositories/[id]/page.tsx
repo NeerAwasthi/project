@@ -16,7 +16,9 @@ export default async function RepositoryDetailsPage({ params }: { params: Promis
             <h1 className="mt-2 text-3xl font-bold text-white">{repo.name}</h1>
             <p className="mt-3 text-slate-300">{repo.description}</p>
           </div>
-          <button className="rounded-xl bg-gradient-to-r from-violet-500 to-cyan-500 px-4 py-2 font-medium text-white">Analyze with Gemini</button>
+          <Link href="/ai-analysis" className="rounded-xl bg-gradient-to-r from-violet-500 to-cyan-500 px-4 py-2 font-medium text-white" onClick={() => window.localStorage.setItem("selected-ai-repo", repo.id)}>
+            Analyze with Gemini
+          </Link>
         </div>
 
         <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">

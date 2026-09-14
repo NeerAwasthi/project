@@ -52,7 +52,8 @@ export type AIAnalysisResult = {
   security: number;
   scalability: number;
   technologies: string[];
-  improvements: string[];
+  recommendations: string[];
+  improvements?: string[];
   learningRecommendations: string[];
 };
 
