@@ -18,10 +18,10 @@ export default function Home() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(124,58,237,0.18),_transparent_22%),radial-gradient(circle_at_bottom_right,_rgba(34,211,238,0.16),_transparent_28%)]" />
       <div className="relative mx-auto max-w-7xl px-6 pb-20 pt-8">
         <header className="flex items-center justify-between rounded-full border border-white/10 bg-white/5 px-4 py-3 backdrop-blur-md">
-          <div className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-3" aria-label="Go to TechPulse home">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-cyan-400 font-bold text-slate-950">T</div>
             <span className="text-lg font-semibold">TechPulse</span>
-          </div>
+          </Link>
 
           <nav className="hidden items-center gap-6 text-sm text-slate-300 md:flex">
             <Link href="#features">Features</Link>
@@ -29,7 +29,7 @@ export default function Home() {
             <Link href="#cta">Demo</Link>
           </nav>
 
-          <Link href="/login" className="rounded-full bg-gradient-to-r from-violet-500 to-cyan-500 px-4 py-2 text-sm font-medium text-white shadow-lg shadow-cyan-500/20 transition hover:opacity-90">
+          <Link href="/api/github/auth" className="rounded-full bg-gradient-to-r from-violet-500 to-cyan-500 px-4 py-2 text-sm font-medium text-white shadow-lg shadow-cyan-500/20 transition hover:opacity-90">
             Continue with GitHub
           </Link>
         </header>
@@ -47,10 +47,10 @@ export default function Home() {
             </p>
 
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-              <Link href="/login" className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-violet-500 to-cyan-500 px-6 py-3 font-medium text-white shadow-xl shadow-violet-500/25 transition hover:translate-y-[-1px]">
+              <Link href="/api/github/auth" className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-violet-500 to-cyan-500 px-6 py-3 font-medium text-white shadow-xl shadow-violet-500/25 transition hover:translate-y-[-1px]">
                 Continue with GitHub <ArrowRight size={18} />
               </Link>
-              <Link href="#features" className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-6 py-3 font-medium text-slate-200 transition hover:bg-white/10">
+              <Link href="/dashboard" className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-6 py-3 font-medium text-slate-200 transition hover:bg-white/10">
                 Explore Platform
               </Link>
             </div>
@@ -167,7 +167,7 @@ export default function Home() {
             <p className="mx-auto mt-4 max-w-2xl text-slate-300">
               See your repositories, patterns, and learning opportunities in one polished developer workspace built for real-world growth.
             </p>
-            <Link href="/login" className="mt-8 inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 font-medium text-slate-950 transition hover:opacity-90">
+            <Link href="/api/github/auth" className="mt-8 inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 font-medium text-slate-950 transition hover:opacity-90">
               Start with GitHub <ArrowRight size={18} />
             </Link>
           </div>
@@ -177,9 +177,9 @@ export default function Home() {
           <div className="font-semibold text-white">TechPulse</div>
           <div className="flex gap-6">
             <a href="https://github.com" target="_blank" rel="noreferrer">GitHub</a>
-            <a href="#">Privacy</a>
-            <a href="#">Terms</a>
-            <a href="#">Project</a>
+            <Link href="/">Privacy</Link>
+            <Link href="/dashboard">Terms</Link>
+            <Link href="/dashboard">Project</Link>
           </div>
         </footer>
       </div>

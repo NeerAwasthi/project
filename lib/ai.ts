@@ -143,15 +143,19 @@ async function getRecentCommitMessages(repositoryId: string) {
 }
 
 export async function analyzeRepository(repository: RepositoryRecord): Promise<AIAnalysisResult> {
-  if (env.demoMode || !env.geminiApiKey || !env.geminiApiKey.trim()) {
+  if (env.demoMode) {
     return getAiFallbackAnalysis();
+  }
+
+  if (!env.geminiApiKey || !env.geminiApiKey.trim()) {
+    throw new Error("GEMINI_API_KEY is not configured.");
   }
 
   try {
     const ai = new GoogleGenAI({ apiKey: env.geminiApiKey });
     const commitMessages = await getRecentCommitMessages(repository.id);
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-3.6-flash",
       contents: buildRepositoryPrompt(repository, commitMessages),
       config: {
         responseMimeType: "application/json",
@@ -162,7 +166,7 @@ export async function analyzeRepository(repository: RepositoryRecord): Promise<A
     return normalizeGeminiAnalysis(parsedJson);
   } catch (error) {
     console.error("Gemini repository analysis failed:", error);
-    return demoAnalysis as AIAnalysisResult;
+    throw error;
   }
 }
 

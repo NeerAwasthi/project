@@ -6,6 +6,7 @@ export type SessionUser = {
   name: string;
   avatarUrl?: string;
   email?: string;
+  accessToken?: string;
 };
 
 export async function getSessionUser(): Promise<SessionUser | null> {
@@ -23,6 +24,7 @@ export async function getSessionUser(): Promise<SessionUser | null> {
       name: payload.name || "Demo User",
       avatarUrl: payload.avatarUrl,
       email: payload.email,
+      accessToken: payload.accessToken,
     };
   } catch {
     return null;

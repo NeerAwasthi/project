@@ -78,19 +78,28 @@ export async function POST(request: Request) {
     }
 
     const hasGeminiKey = Boolean(env.geminiApiKey && env.geminiApiKey.trim());
-    const analysis = hasGeminiKey ? await analyzeRepository(repository) : getAiFallbackAnalysis();
+    if (!hasGeminiKey) {
+      return NextResponse.json({
+        success: false,
+        error: { code: "AI_SERVICE_UNAVAILABLE", message: "GEMINI_API_KEY is not configured." },
+      }, { status: 503 });
+    }
 
-    if (repository.id && hasGeminiKey) {
+    const analysis = await analyzeRepository(repository);
+
+    if (repository.id) {
       await saveAnalysisRecord(user.id, repository.id, analysis);
     }
 
-    return NextResponse.json({ success: true, data: analysis, meta: { mode: hasGeminiKey ? "gemini" : "demo" } });
+    return NextResponse.json({ success: true, data: analysis, meta: { mode: "gemini" } });
   } catch (error) {
     console.error("AI analysis route failed:", error);
     return NextResponse.json({
-      success: true,
-      data: getAiFallbackAnalysis(),
-      meta: { mode: "demo", warning: "AI analysis failed, so the demo fallback was returned instead." },
-    });
+      success: false,
+      error: {
+        code: "AI_ANALYSIS_FAILED",
+        message: error instanceof Error ? error.message : "Gemini AI analysis failed.",
+      },
+    }, { status: 500 });
   }
 }

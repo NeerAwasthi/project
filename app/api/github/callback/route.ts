@@ -89,6 +89,7 @@ export async function GET(request: Request) {
       name: user.name || user.login,
       avatarUrl: user.avatar_url,
       email: user.email,
+      accessToken: tokenData.access_token,
     });
     await clearOAuthState();
 
